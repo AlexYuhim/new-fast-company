@@ -1,11 +1,11 @@
 import React from 'react'
 
-const DeleteUser = ({ id, onhandelDeleteUser }) => {
+const DeleteUser = ({ id, onHandleDeleteUser }) => {
   return (
     <button
       key={id}
       className="badge btn-danger m-2"
-      onClick={() => onhandelDeleteUser(id)}
+      onClick={() => onHandleDeleteUser(id)}
     >
       Delete
     </button>

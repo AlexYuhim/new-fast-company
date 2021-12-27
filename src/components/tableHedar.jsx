@@ -1,15 +1,27 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import ShoweCaret from './showeCaret'
 
 const TableHeader = ({ onSort, selectedSort, columnns }) => {
+  const caretMove = (target) => {
+    // console.log('target', target)
+    // console.log('selectedSort', selectedSort)
+    if (target) {
+      if (selectedSort.path === target) {
+        return <ShoweCaret selectedSort={selectedSort} />
+      }
+    }
+    return null
+  }
+
   const handleSort = (items) => {
-    if (selectedSort.iter === items) {
+    if (selectedSort.path === items) {
       onSort({
         ...selectedSort,
         order: selectedSort.order === 'asc' ? 'desc' : 'asc',
       })
     } else {
-      onSort({ iter: items, order: 'asc' })
+      onSort({ path: items, order: 'asc' })
     }
   }
   return (
@@ -18,29 +30,18 @@ const TableHeader = ({ onSort, selectedSort, columnns }) => {
         {Object.keys(columnns).map((column) => (
           <th
             key={column}
-            onClick={() => {
-              handleSort(columnns[column].iter)
-            }}
+            onClick={
+              columnns[column].path
+                ? () => handleSort(columnns[column].path)
+                : undefined
+            }
+            {...{ role: columnns[column].path && 'button' }}
             scope="col"
           >
             {columnns[column].name}
+            {caretMove(columnns[column].path)}
           </th>
         ))}
-
-        {/* <th onClick={() => handleSort('profession.name')} scope="col">
-          Профессия
-        </th>
-        <th scope="col">Качества</th>
-        <th onClick={() => handleSort('completedMeetings')} scope="col">
-          количество встреч
-        </th>
-        <th onClick={() => handleSort('rate')} scope="col">
-          рейтинг
-        </th>
-        <th onClick={() => handleSort('bookmark')} scope="col">
-          Избранное
-        </th>
-        <th scope="col"></th> */}
       </tr>
     </thead>
   )
@@ -49,6 +50,7 @@ TableHeader.propTypes = {
   onSort: PropTypes.func.isRequired,
   selectedSort: PropTypes.object.isRequired,
   columnns: PropTypes.object.isRequired,
+  caretMove: PropTypes.func,
 }
 
 export default TableHeader

@@ -1,34 +1,59 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import User from './user'
-import TableHeader from './tableHedar'
-const UserTable = ({ users, onSort, selectedSort, ...prop }) => {
+// import TableHeader from './tableHedar'
+// import TableBody from './tableBody'
+import Favorites from './favorites'
+import DeleteUser from './deleteUser'
+import 'bootstrap-icons/font/bootstrap-icons.css'
+import QualitiesList from './qualitiesList'
+import Table from './table'
+
+const UserTable = ({
+  users,
+  onSort,
+  onHandleFavoritClik,
+  selectedSort,
+  onHandleDeleteUser,
+  ...prop
+}) => {
   const columnns = {
-    name: { iter: 'name', name: 'Имя' },
-    profession: { iter: 'profession.name', name: 'Профессия' },
-    qualittes: { name: 'Качества' },
-    completedMeetings: { iter: 'completedMeetings', name: 'Количество встреч' },
-    rate: { iter: 'rate', name: 'рейтинг' },
-    bookmark: { iter: 'bookmark', name: 'Избранное' },
-    delete: {},
+    name: { path: 'name', name: 'Имя' },
+    profession: { path: 'profession.name', name: 'Профессия' },
+    qualittes: {
+      name: 'Качества',
+      component: (user) => <QualitiesList qualities={user.qualities} />,
+    },
+    completedMeetings: { path: 'completedMeetings', name: 'Количество встреч' },
+    rate: { path: 'rate', name: 'рейтинг' },
+    bookmark: {
+      path: 'bookmark',
+      name: 'Избранное',
+      component: (user) => (
+        <Favorites
+          id={user._id}
+          onHandleFavoritClik={onHandleFavoritClik}
+          bookmark={user.bookmark}
+          {...user}
+        />
+      ),
+    },
+    delete: {
+      component: (user) => (
+        <DeleteUser id={user._id} onHandleDeleteUser={onHandleDeleteUser} />
+      ),
+    },
   }
   return (
-    <table className="table">
-      <TableHeader {...{ onSort, selectedSort, columnns }} />
-
-      <tbody>
-        {users.map((user) => {
-          return (
-            <User
-              className="d-flex justify-content-center"
-              key={user._id}
-              {...user}
-              {...prop}
-            />
-          )
-        })}
-      </tbody>
-    </table>
+    // <Table>
+    //   <TableHeader {...{ onSort, selectedSort, columnns }} />
+    //   <TableBody {...{ columnns, data: users }} />
+    // </Table>
+    <Table
+      onSort={onSort}
+      selectedSort={selectedSort}
+      columnns={columnns}
+      data={users}
+    />
   )
 }
 UserTable.propTypes = {

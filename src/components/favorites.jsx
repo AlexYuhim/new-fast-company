@@ -1,17 +1,17 @@
 import React from 'react'
 
-const Favorites = (props) => {
+const Favorites = ({ prop, onHandleFavoritClik, _id, bookmark }) => {
   return (
     <button
       onClick={() => {
-        props.onhendelFavoritClik(props.id, props.bookmark)
+        onHandleFavoritClik(_id, bookmark)
       }}
     >
       <i
         style={{ fontSize: '20px' }}
-        key={props.id}
+        key={_id}
         className={`${
-          props.bookmark !== true
+          bookmark !== true
             ? 'bi bi-hand-thumbs-up'
             : 'bi bi-hand-thumbs-down-fill'
         }`}
