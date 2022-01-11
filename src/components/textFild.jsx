@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-const TextFild = ({ label, type, name, value, onChange }) => {
+const TextFild = ({ label, type, name, value, onChange, error }) => {
   return (
     <div>
       <label htmlFor={name}> {label}</label>
@@ -11,6 +11,7 @@ const TextFild = ({ label, type, name, value, onChange }) => {
         value={value}
         onChange={onChange}
       />
+      {error && <p>{error}</p>}
     </div>
   )
 }
@@ -23,5 +24,6 @@ TextFild.propTypes = {
   name: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func,
+  error: PropTypes.string,
 }
 export default TextFild

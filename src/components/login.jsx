@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import TextFild from './textFild'
 const Login = () => {
-  const [errors, setErrors] = useState()
+  const [errors, setErrors] = useState({})
   const [data, setData] = useState({ email: '', password: '' }) // Универсалоное состояние для всех полей
   const handleChange = ({ target }) => {
     setData((prevState) => ({ ...prevState, [target.name]: target.value })) // если мы вызываем функцию через колбаек , то мы можем получить предыдуще состояние state
@@ -41,6 +41,7 @@ const Login = () => {
         name="email"
         value={data.email}
         onChange={handleChange}
+        error={errors.email}
       />
       <TextFild
         label="Пароль"
@@ -48,6 +49,7 @@ const Login = () => {
         name="password"
         value={data.password}
         onChange={handleChange}
+        error={errors.password}
       />
       <button type="submit">Submit</button>
     </form>
