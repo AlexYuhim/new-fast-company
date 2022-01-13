@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import TextFild from './textFild'
+import { validstor } from '../utils/validator'
 const Login = () => {
   const [errors, setErrors] = useState({})
   const [data, setData] = useState({ email: '', password: '' }) // Универсалоное состояние для всех полей
@@ -9,17 +10,27 @@ const Login = () => {
      * Получаем старое значение state изменяем значение в вполе в котором идет ввод
      */
   }
+  /** создаем конфигурация валидатора */
+  const validatoConfig = {
+    email: {
+      isRequired: { message: 'Электронаая почта обязательна для заполнения' },
+    },
+    password: {
+      isRequired: { message: ' Поле пароль обязательно для заполнения' },
+    },
+  }
+
   useEffect(() => {
     validate()
   }, [data])
   // в методе validate задаем условия валидности
   const validate = () => {
-    const errors = {}
-    for (const fialdName in data) {
-      if (data[fialdName].trim() === '') {
-        errors[fialdName] = `${fialdName} обязательно для заполнения`
-      }
-    }
+    const errors = validstor(data, validatoConfig)
+    // for (const fieldName in data) {
+    //   if (data[fieldName].trim() === '') {
+    //     errors[fieldName] = `${fieldName} обязательно для заполнения`
+    //   }
+    // }
     setErrors(errors)
     return Object.keys(errors).length === 0 // если количество ошибок = 0  то ничего не возврящаем
   }
