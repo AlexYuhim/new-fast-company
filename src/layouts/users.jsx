@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import GroupList from './grupList'
-import FormatMessage from './message'
-import Pagination from './pagination'
+import GroupList from '../components/grupList'
+import FormatMessage from '../components/message'
+import Pagination from '../components/pagination'
 import api from '../api'
-import UserTable from './userTable'
+import UserTable from '../components/userTable'
 import _ from 'lodash'
+import SherchUser from '../components/formSherch'
 
 const Users = () => {
   const pageSize = 8
-
+  const [sherсhUsers, setSherсhUsers] = useState('') //  хук для поиска подстроки в именах пользовотелей
   const [corentPage, setCorentPage] = useState(1)
   const [profession, setProfession] = useState()
   const [selectedProff, setSelectedProff] = useState()
@@ -18,13 +19,19 @@ const Users = () => {
   }, [])
   useEffect(() => {
     setCorentPage(1)
-  }, [selectedProff])
+  }, [selectedProff, sherсhUsers]) // отслеживаем изменение в дом
 
   const [users, setUsers] = useState()
   useEffect(() => {
     api.users.fetchAll().then((data) => setUsers(data))
   }, [])
 
+  const handleShershUser = ({ target }) => {
+    // принимаем таргет из компонента
+    setSelectedProff() // при каждом срабатывании обновляем selectedProff для возможности сортировки при выбранной профессии
+    console.log('target', target.value)
+    setSherсhUsers(target.value)
+  }
   const handleFavoritClik = (id, stat) => {
     const status = users.map((event) => {
       if (event._id === id) {
@@ -54,6 +61,7 @@ const Users = () => {
     setSortBy(items)
   }
   const handleProfessionSelect = (item) => {
+    setSherсhUsers() //
     setSelectedProff(item)
   }
   const handlePageChange = (pageIndex) => {
@@ -61,12 +69,17 @@ const Users = () => {
   }
 
   const clearFilter = () => {
-    setSelectedProff()
+    setSelectedProff() // я устал уже 3 часа ночи я пошел спать
+    setSherсhUsers()
   }
 
   if (users) {
     const filterUseer = selectedProff
       ? users.filter((user) => user.profession._id === selectedProff)
+      : sherсhUsers
+      ? users.filter(
+          (user) => user.name.toLowerCase().includes(sherсhUsers.toLowerCase()) //осуществляем поиск подстроки
+        )
       : users
 
     const counter = filterUseer.length
@@ -105,6 +118,10 @@ const Users = () => {
         </div>
         <div className="d-flex flex-column">
           <span className="badge m-2 bg-primary">{FormatMessage(counter)}</span>
+          <SherchUser
+            sherсh={sherсhUsers}
+            onhandleShershUser={handleShershUser}
+          />
           <UserTable
             selectedSort={sortBy}
             onSort={handelSort}

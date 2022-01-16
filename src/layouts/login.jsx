@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import TextFild from './textFild'
-import { validstor } from '../utils/validator'
+import TextFild from '../components/textFild'
+import { validator } from '../utils/validator'
 const Login = () => {
   const [errors, setErrors] = useState({})
   const [data, setData] = useState({ email: '', password: '' }) // Универсалоное состояние для всех полей
@@ -14,9 +14,17 @@ const Login = () => {
   const validatoConfig = {
     email: {
       isRequired: { message: 'Электронаая почта обязательна для заполнения' },
+      isEmail: { message: 'Email введен не коректно' },
     },
     password: {
       isRequired: { message: ' Поле пароль обязательно для заполнения' },
+      isCapitalSymbol: {
+        message: ' пароль должен содержать минимум одну заглавную букву',
+      },
+      isContainDigit: {
+        message: ' пароль должен содержать минимум одну цифру',
+      },
+      min: { message: 'Пароль дожен состоять минимум из 8 символов', value: 8 },
     },
   }
 
@@ -25,7 +33,7 @@ const Login = () => {
   }, [data])
   // в методе validate задаем условия валидности
   const validate = () => {
-    const errors = validstor(data, validatoConfig)
+    const errors = validator(data, validatoConfig)
     // for (const fieldName in data) {
     //   if (data[fieldName].trim() === '') {
     //     errors[fieldName] = `${fieldName} обязательно для заполнения`
@@ -34,6 +42,7 @@ const Login = () => {
     setErrors(errors)
     return Object.keys(errors).length === 0 // если количество ошибок = 0  то ничего не возврящаем
   }
+  const isValid = Object.keys(errors).length === 0 // переменная для октивности кнопки отправить
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -46,24 +55,37 @@ const Login = () => {
    */
 
   return (
-    <form onSubmit={handleSubmit}>
-      <TextFild
-        label="Эkектронная почта"
-        name="email"
-        value={data.email}
-        onChange={handleChange}
-        error={errors.email}
-      />
-      <TextFild
-        label="Пароль"
-        type="password"
-        name="password"
-        value={data.password}
-        onChange={handleChange}
-        error={errors.password}
-      />
-      <button type="submit">Submit</button>
-    </form>
+    <div className="container mt-5">
+      <div className="row">
+        <div className="col-md-6 offset-md-3 shadow p-4">
+          <h4 className="mb-4"> login </h4>
+          <form onSubmit={handleSubmit}>
+            <TextFild
+              label="Эkектронная почта"
+              name="email"
+              value={data.email}
+              onChange={handleChange}
+              error={errors.email}
+            />
+            <TextFild
+              label="Пароль"
+              type="password"
+              name="password"
+              value={data.password}
+              onChange={handleChange}
+              error={errors.password}
+            />
+            <button
+              type="submit"
+              disabled={!isValid}
+              className="btn bg-primary w-100 mx-auto mt-2"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
   )
 }
 
