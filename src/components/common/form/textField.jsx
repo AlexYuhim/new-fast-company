@@ -1,14 +1,18 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const TextFild = ({ label, type, name, value, onChange, error }) => {
+const TextField = ({ label, type, name, value, onChange, error }) => {
+  const handleChenge = ({ target }) => {
+    onChange({ name: [target.name], value: target.value })
+  }
+
   const [showPassword, setShowPassword] = useState(false) // следим за состоянием по умолчанию, мы отображаем пароль
   const togleShowPassword = () => {
     setShowPassword((prevState) => !prevState)
   }
 
   const getInputClass = () => {
-    return 'form-control ' + (error ? ' is-invalid' : '')
+    return 'form-control ' + (error ? ' is-invalid' : '') // метод рендоринга ошибки? генерации класса
   }
   /** type={showPassword ? 'text' : type}  меняем тип в зависимости от состояния */
   return (
@@ -20,7 +24,7 @@ const TextFild = ({ label, type, name, value, onChange, error }) => {
           id={name}
           name={name}
           value={value}
-          onChange={onChange}
+          onChange={handleChenge}
           className={getInputClass()}
         />
         {type === 'password' && (
@@ -37,10 +41,10 @@ const TextFild = ({ label, type, name, value, onChange, error }) => {
     </div>
   )
 }
-TextFild.defaultProps = {
+TextField.defaultProps = {
   type: 'text',
 }
-TextFild.propTypes = {
+TextField.propTypes = {
   label: PropTypes.string,
   type: PropTypes.string,
   name: PropTypes.string,
@@ -48,4 +52,4 @@ TextFild.propTypes = {
   onChange: PropTypes.func,
   error: PropTypes.string,
 }
-export default TextFild
+export default TextField

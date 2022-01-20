@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import GroupList from '../components/grupList'
-import FormatMessage from '../components/message'
-import Pagination from '../components/pagination'
+import GroupList from '../components/common/grupList'
+import FormatMessage from '../components/ui/message'
+import Pagination from '../components/common/pagination'
 import api from '../api'
-import UserTable from '../components/userTable'
+
+import UserTable from '../components/common/table/userTable'
 import _ from 'lodash'
-import SherchUser from '../components/formSherch'
+
+import SherchUser from '../components/common/table/formSherch'
+import { paginate } from '../utils/pagination'
 
 const Users = () => {
   const pageSize = 8
@@ -27,7 +30,6 @@ const Users = () => {
   }, [])
 
   const handleShershUser = ({ target }) => {
-    // принимаем таргет из компонента
     setSelectedProff() // при каждом срабатывании обновляем selectedProff для возможности сортировки при выбранной профессии
     console.log('target', target.value)
     setSherсhUsers(target.value)
@@ -53,10 +55,6 @@ const Users = () => {
     return setUsers(users.filter((e) => e._id !== id))
   }
 
-  const paginate = (items, pageNumber, pageSize) => {
-    const startIndex = (pageNumber - 1) * pageSize
-    return [...items].splice(startIndex, pageSize)
-  }
   const handelSort = (items) => {
     setSortBy(items)
   }
@@ -69,7 +67,7 @@ const Users = () => {
   }
 
   const clearFilter = () => {
-    setSelectedProff() // я устал уже 3 часа ночи я пошел спать
+    setSelectedProff() // я устал, уже 3 часа ночи я пошел спать
     setSherсhUsers()
   }
 

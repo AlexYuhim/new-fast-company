@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
-import api from '../api'
-import Qualities from './qualities'
+import api from '../../api'
+import Qualities from './qualities/qualities'
 
 const User = () => {
   const { userId } = useParams()
@@ -10,8 +10,9 @@ const User = () => {
   useEffect(() => {
     api.users.getById(userId).then((data) => setUser(data))
   }, [])
+  console.log('userId', userId)
   const handleReLoad = () => {
-    history.push('/users')
+    history.push(`/users/${userId}/edit`)
   }
 
   return (
@@ -31,7 +32,7 @@ const User = () => {
               handleReLoad()
             }}
           >
-            все пользователи
+            Внести изминения
           </button>
         </>
       ) : (

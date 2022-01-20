@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import ShoweCaret from './showeCaret'
+import ShoweCaret from '../../ui/showeCaret'
 
 const TableHeader = ({ onSort, selectedSort, columnns }) => {
   const caretMove = (target) => {

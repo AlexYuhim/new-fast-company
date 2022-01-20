@@ -2,10 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 // import TableHeader from './tableHedar'
 // import TableBody from './tableBody'
-import Favorites from './favorites'
+import Favorites from '../../common/favorites'
 import DeleteUser from './deleteUser'
 import 'bootstrap-icons/font/bootstrap-icons.css'
-import QualitiesList from './qualitiesList'
+import QualitiesList from '../../ui/qualities/qualitiesList'
 import Table from './table'
 
 const UserTable = ({
