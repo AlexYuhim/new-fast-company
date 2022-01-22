@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import api from '../../api'
 import Qualities from './qualities/qualities'
+import EditForm from '../common/table/editForm'
 
 const User = () => {
   const { userId } = useParams()

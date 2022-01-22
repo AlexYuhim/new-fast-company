@@ -9,25 +9,35 @@ import MultiSelectField from '../form/multiSelectField'
 import { useParams } from 'react-router-dom'
 
 const EditForm = () => {
-  const params = useParams() // для получения id
-  const [user, setUser] = useState({}) // получаем юзера
+  const { userId } = useParams() // для получения id
+
+  const [user, setUser] = useState({
+    name: '',
+    email: '',
+    profession: [],
+    qualities: [] || q,
+    sex: '',
+  }) // получаем юзера
+
   const [qualities, setQualities] = useState({}) //для выбора каxеств
   const [professions, setProfessions] = useState([]) //  для выбора профеcсий
 
   useEffect(() => {
     api.professions.fetchAll().then((data) => setProfessions(data))
     api.qualities.fetchAll().then((data) => setQualities(data))
-    api.users.getById(params.userId).then((data) =>
+    api.users.getById(userId).then((data) =>
       setUser({
         name: data.name,
         email: data.email,
         profession: data.profession.name,
-        qualiti: [data.qualities.map((e) => ({ label: e.name, value: e._id }))],
+        qualities: data.qualities.map((e) => ({ label: e.name, value: e._id })),
         sex: data.sex,
       })
     )
   }, [])
-
+  var q = user.qualities
+  console.log('user', user)
+  console.log('q', q)
   const handleChange = (target) => {
     setUser((prevState) => ({ ...prevState, [target.name]: target.value }))
   }
@@ -77,7 +87,7 @@ const EditForm = () => {
               <MultiSelectField
                 options={qualities}
                 onChange={handleChange}
-                defaultValue={user.qualiti || []}
+                defaultValue={user.qualities}
                 name="qualities"
                 label="выбирите ваши качества"
               />
